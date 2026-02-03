@@ -21,13 +21,38 @@ socket.onopen = () => {
   term.writeln("Connected to Forlorn server!");
 };
 
+//BUG: doesnt work for all rooms
+const decoder = new TextDecoder();
+
 socket.onmessage = (ev) => {
-  if (typeof ev.data == "string") {
-    term.write(ev.data);
+  let text;
+
+  if (ev.data instanceof ArrayBuffer) {
+    text = decoder.decode(ev.data);
   } else {
-    const data = new Uint8Array(ev.data);
-    term.write(new TextDecoder().decode(data));
+    text = ev.data;
   }
+
+  if (text.startsWith("{")) {
+    try {
+      const state = JSON.parse(text);
+      if (state.type === "state") {
+        handleUIMessage(state);
+        return;
+      }
+    } catch {
+    }
+  }
+
+  if (text.startsWith("STATE ")) {
+    handleUIMessage({
+      type: "state",
+      data: text.slice(6)
+    });
+    return;
+  }
+
+  term.write(text);
 };
 
 term.onData(data => {
@@ -56,3 +81,7 @@ term.onData(data => {
   inputBuffer += data;
   term.write(data);
 });
+
+function handleUIMessage(state) {
+  console.log(state)
+}
