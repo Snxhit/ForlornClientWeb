@@ -1,7 +1,7 @@
 const term = new Terminal({
   cursorBlink: true,
   fontSize: 16,
-  fontFamily: 'Fira Code',
+  fontFamily: 'JetBrains Mono',
   fontWeight: '500',
   // the below two prevent random spacing, important
   convertEol: true,
@@ -24,7 +24,7 @@ const term = new Terminal({
 let inputBuffer = "";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await document.fonts.load("16px 'Fira Code'");
+  await document.fonts.load("16px 'JetBrains Mono'");
   await document.fonts.ready;
 
   const fit = new FitAddon.FitAddon();
@@ -174,7 +174,7 @@ function handleUIMessage(state) {
 
     document.getElementById("levelValue").textContent = tokens[1].split(":")[1];
     document.getElementById("trainsValue").textContent = tokens[2].split(":")[1];
-  } else if (state.type === "selfupdate") {
+  } else if (state.type === "selfdata") {
     const tokens = state.data.split(" ");
     document.getElementById("coinsValue").textContent = tokens[0].split(":")[1];
   }
