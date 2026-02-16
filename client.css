@@ -1,0 +1,355 @@
+html
+{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background: #000000;
+  color: #cccccc;
+  font-family: 'Fira Code', monospace;
+}
+
+body
+{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #0b0f12;
+  background-image: url(https://res.cloudinary.com/dp7g5aflo/image/upload/v1771271258/Untitled197_20260217011416_nzj0tp.png);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#parentLayout
+{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#terminal
+{
+  background-color: rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  padding: 10px;
+  border: 0.5px solid rgb(100, 100, 100);
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+  margin: 9px;
+  height: 96%;
+  flex: 1;
+  transition: border-color 0.3s ease;
+}
+
+#terminal:hover
+{
+  border-color: rgb(140, 140, 140);
+}
+
+.sideParent
+{
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  width: 220px;
+  height: 70%;
+  border: 2px dashed rgba(128, 128, 128, 0.5);
+  border-radius: 10px;
+  margin: 9px;
+  padding: 10px;
+  background: rgba(18, 18, 18, 0.75);
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+#sidebar:hover
+{
+  border-color: rgba(160, 160, 160, 0.7);
+  background: rgba(18, 18, 18, 0.85);
+}
+
+
+.sideLogo
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 220px;
+  height: 26%;
+  border: 2px solid rgba(72, 73, 74, 0.6);
+  border-radius: 10px;
+  margin: 9px;
+  background: rgba(18, 18, 18, 0.75);
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+.sideLogo:hover
+{
+  border-color: rgba(92, 93, 94, 0.8);
+  background: rgba(18, 18, 18, 0.85);
+}
+.sideLogo p
+{
+  margin: 0;
+  font-size: 40px;
+}
+
+
+.seperator
+{
+  height: 1px;
+  width: 80%;
+  background-color: rgb(125, 125, 125);
+  justify-content: center;
+}
+
+.exitsParent
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.exits
+{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  height: 99px;
+  width: 99px;
+}
+
+.exitBox
+{
+  box-sizing: border-box;
+  text-align: center;
+  justify-content: center;
+  margin: 0.5px;
+  height: 33px;
+  width: 33px;
+}
+
+.dirBox
+{
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-size: 25px;
+  transition: all 0.2s ease;
+}
+
+.dirBox:hover
+{
+  border-color: rgb(160, 160, 160);
+  transform: scale(1.05);
+}
+
+.combatParent
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.hpBar
+{
+  box-sizing: border-box;
+  border: 1px solid rgb(56, 56, 56);
+  margin: 3px;
+  height: 25px;
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+  overflow: visible;
+}
+
+.hpBar::after
+{
+  content: attr(data-label);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 13px;
+  pointer-events: none;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+.playerHpBar
+{
+  box-sizing: border-box;
+  white-space: nowrap;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, rgb(2, 125, 0), rgb(0, 59, 4));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+.enemyHpBar
+{
+  box-sizing: border-box;
+  white-space: nowrap;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, rgb(125, 8, 0), rgb(64, 4, 0));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.hpBar[data-inactive="true"] .playerHpBar,
+.hpBar[data-inactive="true"] .enemyHpBar
+{
+  filter: grayscale(100%) opacity(0.55);
+}
+
+.expParent
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.expBarParent
+{
+  box-sizing: border-box;
+  border: 1px solid rgb(56, 56, 56);
+  margin: 3px;
+  height: 25px;
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+  overflow: visible;
+}
+.expBarParent::after
+{
+  content: attr(data-label);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 13px;
+  pointer-events: none;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+.expBar
+{
+  box-sizing: border-box;
+  white-space: nowrap;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, rgb(2, 116, 191), rgb(1, 75, 125));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.greenGradient
+{
+  background: linear-gradient(to bottom, rgb(18, 150, 0), rgb(10, 82, 0));
+  color: transparent;
+  background-clip: text;
+}
+.pinkGradient
+{
+  background: linear-gradient(to bottom, rgb(138, 0, 78), rgb(82, 0, 46));
+  color: transparent;
+  background-clip: text;
+}
+
+.statsParent
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-top: 15px;
+  gap: 8px;
+}
+
+.statRow
+{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.statLabel
+{
+  font-weight: 600;
+  color: rgb(180, 180, 180);
+}
+
+.statValue
+{
+  font-weight: 700;
+  color: rgb(200, 200, 200);
+}
+
+@media (max-width: 768px)
+{
+  body
+  {
+    background-attachment: scroll;
+    background-size: auto 100%;
+    background-position: center top;
+  }
+
+  #parentLayout
+  {
+    flex-direction: column;
+  }
+
+  #terminal
+  {
+    margin: 0;
+    height: 100vh;
+    flex: 1;
+    border: none;
+    border-radius: 0;
+  }
+
+  #sideParent
+  {
+    display: none;
+  }
+}

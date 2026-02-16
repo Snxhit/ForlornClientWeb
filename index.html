@@ -3,20 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <title>Forlorn - Web</title>
+  <link rel="icon" type="image/svg+xml" href="./public/favicon1.svg" sizes="any">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css">
-  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css">
+  <link rel="stylesheet" href="client.css">
 </head>
 <body>
   <div id="parentLayout">
     <div id="terminal"></div>
-    <div id="sidebar">
-      <!-- coming soon -->
-      <div id="exits">Exits</div>
-      <div id="status">Status</div>
+    <div id="sideParent">
+      <div id="sidebar">
+        <!-- coming soon -->
+        <div class="exitsParent">
+          <div class="exits">
+            <div class="exitBox"></div>
+            <div class="exitBox dirBox" id="northExit">N</div>
+            <div class="exitBox"></div>
+            <div class="exitBox dirBox" id="westExit">W</div>
+            <div class="exitBox"></div>
+            <div class="exitBox dirBox" id="eastExit">E</div>
+            <div class="exitBox"></div>
+            <div class="exitBox dirBox" id="southExit">S</div>
+            <div class="exitBox"></div>
+          </div>
+        </div>
+        <div class="seperator"></div>
+        <div class="combatParent">
+          <div class="hpBar">
+            <div class="playerHpBar" id="playerHpBar"></div>
+          </div>
+          <div class="hpBar">
+            <div class="enemyHpBar" id="enemyHpBar"></div>
+          </div>
+        </div>
+        <div class="seperator"></div>
+        <div class="expParent">
+          <div class="expBarParent">
+            <div class="expBar" id="expBar"></div>
+          </div>
+        </div>
+        <div class="seperator"></div>
+        <div class="statsParent">
+          <div class="statRow">
+            <span class="statLabel">Level:</span>
+            <span class="statValue" id="levelValue">1</span>
+          </div>
+          <div class="statRow">
+            <span class="statLabel">Trains:</span>
+            <span class="statValue" id="trainsValue">0</span>
+          </div>
+          <div class="statRow">
+            <span class="statLabel">Coins:</span>
+            <span class="statValue" id="coinsValue">0</span>
+          </div>
+        </div>
+      </div>
+      <div class="sideLogo">
+        <p class="greenGradient">Forlorn</p>
+        <p class="pinkGradient">MUD</p>
+      </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
-  <script src="main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+  <script src="client.js"></script>
 </body>
 </html>
