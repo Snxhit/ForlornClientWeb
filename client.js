@@ -69,6 +69,16 @@ socket.onopen = () => {
   term.writeln("Connected to Forlorn server!");
 };
 
+socket.onclose = () => {
+  term.writeln("\r\nDisconnected from server.");
+};
+
+window.addEventListener("beforeunload", () => {
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send("quit\n");
+  }
+});
+
 socket.onmessage = (ev) => {
   let text = typeof ev.data === "string" ? ev.data : new TextDecoder().decode(ev.data);
 
