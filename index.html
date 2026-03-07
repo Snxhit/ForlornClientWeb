@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forlorn - Web</title>
   <link rel="icon" type="image/svg+xml" href="./public/favicon1.svg" sizes="any">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css">
@@ -17,7 +18,15 @@
 </head>
 <body>
   <div id="parentLayout">
-    <div id="terminal"></div>
+    <div class="terminalParent">
+      <div id="terminal"></div>
+      <div id="inputBar">
+        <input type="text" id="inputBox" placeholder="Write a command here..." autofocus></input>
+        <button id="inputSubmit">
+          -->
+        </button>
+      </div>
+    </div>
     <div id="sideParent">
       <div id="sidebar">
         <!-- coming soon -->
@@ -64,11 +73,33 @@
             <span class="statValue" id="coinsValue">0</span>
           </div>
         </div>
+        <button id="settings" class="settings">
+          <img src="https://res.cloudinary.com/dp7g5aflo/image/upload/v1772889422/settings-cog_zxgkzv.png" alt="settings">
+        </button>
       </div>
       <div class="sideLogo">
         <p class="greenGradient">Forlorn</p>
         <p class="pinkGradient">MUD</p>
       </div>
+    </div>
+  </div>
+  <div id="settingsPanel">
+    <h3 class="settingHeading">SETTINGS</h3>
+    <h6 class="settingExplanation">All settings are saved locally!</h6>
+    <div class="settingSeperator"></div>
+    <h3 class="settingHeading">Aliases</h3>
+    <h6 class="settingExplanation">Allows you to define "aliases" that can be used to shorten commands!</h6>
+    <div id="aliasDiv" class="aliasDiv">
+      <button class="settingsPanelButton" id="newAlias">Create new alias</button>
+    </div>
+    <h3 class="settingHeading">Background</h3>
+    <h6 class="settingExplanation">Turns off the background image and displays solid colored background!</h6>
+    <div class="backgroundImgDiv">
+      <h4>Turn off background image?</h4>
+      <input id="backgroundImgToggle" type="checkbox">
+    </div>
+    <div id="buttonsParent">
+      <button class="settingsPanelButton" id="closeButton">CLOSE --></button>
     </div>
   </div>
 

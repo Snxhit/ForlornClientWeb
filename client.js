@@ -23,6 +23,8 @@ const term = new Terminal({
 
 let inputBuffer = "";
 
+let aliases = [];
+
 document.addEventListener("DOMContentLoaded", async () => {
   await document.fonts.load("16px 'JetBrains Mono'");
   await document.fonts.ready;
@@ -33,14 +35,211 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setTimeout(() => {
     fit.fit();
-    term.focus();
+    //focusing on the inputBox instead
+    //term.focus();
   }, 100);
 
   window.addEventListener("resize", () => {
     setTimeout(() => fit.fit(), 50);
   });
 
-  document.getElementById("terminal").style.height = "97%";
+  let bg = localStorage.getItem("bg");
+  if (bg === null) {
+    localStorage.setItem("bg", "url(https://res.cloudinary.com/dp7g5aflo/image/upload/v1771271258/Untitled197_20260217011416_nzj0tp.png)");
+    document.getElementById("backgroundImgToggle").checked = false;
+  } else {
+    document.body.style.backgroundImage = bg;
+    document.getElementById("backgroundImgToggle").checked = (bg === "none")
+  }
+
+  let aLS = localStorage.getItem("aliases");
+  if (aLS !== null) {
+    aliases = JSON.parse(aLS);
+    for (const a of aliases) {
+      createAliasVisual(a.command, a.value, a.id, true);
+    }
+  }
+
+  //dunno what this does, doesnt change anything??
+  //document.getElementById("terminal").style.height = "97%";
+
+  const inputBox = document.getElementById("inputBox");
+  const inputSubmitButton = document.getElementById("inputSubmit");
+
+  inputSubmitButton.addEventListener("click", () => {
+    const cmd = inputBox.value;
+
+    let aCmd = null;
+    for (const a of aliases) {
+      if (a.command === cmd) {
+        aCmd = a.value;
+      }
+    }
+    if (!aCmd) {
+      term.write(cmd + "\n");
+
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(cmd);
+      }
+    } else {
+      term.write(aCmd + "\n");
+
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(aCmd);
+      }
+    }
+
+    inputBox.value = "";
+    inputBox.focus();
+  });
+  inputBox.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      inputSubmitButton.click();
+    }
+  });
+
+  const settingsButton = document.getElementById("settings");
+  const parentLayout = document.getElementById("parentLayout");
+
+  const settingsPanel = document.getElementById("settingsPanel");
+  const closeButton = document.getElementById("closeButton");
+
+  settingsButton.addEventListener("pointerdown", () => {
+    document.title = "Forlorn - Settings";
+    parentLayout.style.display = "flex";
+    parentLayout.style.animation = "panelSlideRight 0.4s forwards";
+  });
+
+  closeButton.addEventListener("pointerdown", () => {
+    document.title = "Forlorn - Web";
+    settingsPanel.style.display = "flex";
+    settingsPanel.style.animation = "panelSlideLeftHide 0.4s forwards";
+  });
+
+  parentLayout.addEventListener("animationend", (e) => {
+    if (e.animationName === "panelSlideRight") {
+      parentLayout.style.display = "none";
+      settingsPanel.style.display = "flex";
+      settingsPanel.style.animation = "panelSlideLeft 0.4s forwards";
+    }
+  });
+
+  settingsPanel.addEventListener("animationend", (e) => {
+    if (e.animationName === "panelSlideLeftHide") {
+      settingsPanel.style.display = "none";
+      parentLayout.style.display = "flex";
+      parentLayout.style.animation = "panelSlideRightShow 0.4s forwards";
+    }
+  });
+
+  const newAliasButton = document.getElementById("newAlias");
+  newAliasButton.addEventListener("pointerdown", () => {
+    createAliasVisual("", "", null, false);
+
+    setTimeout(() => {
+      newAliasButton.blur();
+    }, 100);
+  });
+
+  function createAliasVisual(cmd, val, existingId = null, isLoading = false) {
+    let id = isLoading ? existingId : createAlias(cmd, val);
+    let parent = document.createElement("div");
+    parent.className = "individualAliasDiv";
+
+    let aliasCmd = document.createElement("input");
+    aliasCmd.className = "settingsPanelButton aliasCmdInput";
+    aliasCmd.type = "text";
+    aliasCmd.placeholder = "Write command here...";
+    aliasCmd.value = cmd;
+
+    let aliasVal = document.createElement("input");
+    aliasVal.className = "settingsPanelButton aliasValInput";
+    aliasVal.type = "text";
+    aliasVal.placeholder = "Write alias here...";
+    aliasVal.value = val;
+
+    let aliasSubmit = document.createElement("button");
+    aliasSubmit.className = "settingsPanelButton aliasSubmit";
+    aliasSubmit.textContent = "SAVE";
+    aliasSubmit.addEventListener("pointerdown", () => { 
+      if (aliasCmd.value !== "" && aliasVal.value !== "") {
+        updateAlias(id, aliasCmd.value, aliasVal.value); 
+
+        aliasSubmit.textContent = "DONE!";
+        setTimeout(() => {
+          aliasSubmit.textContent = "SAVE";
+          aliasSubmit.blur();
+        }, 1200);
+      } else {
+        aliasSubmit.textContent = "EMPTY!";
+        setTimeout(() => {
+          aliasSubmit.textContent = "SAVE";
+          aliasSubmit.blur();
+        }, 1200);
+      }
+    });
+
+    let aliasDelete = document.createElement("button");
+    aliasDelete.className = "settingsPanelButton aliasDelete";
+    aliasDelete.textContent = "DELETE";
+    aliasDelete.addEventListener("pointerdown", () => { 
+      deleteAlias(id, parent); 
+    });
+
+    parent.appendChild(aliasCmd);
+    parent.appendChild(aliasVal);
+    parent.appendChild(aliasSubmit);
+    parent.appendChild(aliasDelete);
+    document.getElementById("aliasDiv").appendChild(parent);
+  }
+
+  function createAlias(cmd, val) {
+    let id;
+    if (aliases.length == 0) {
+      id = 0;
+    } else {
+      id = parseInt(aliases[aliases.length-1].id) + 1
+    };
+
+    const newAlias = {
+      id: id,
+      command: cmd,
+      value: val
+    };
+
+    aliases.push(newAlias);
+    localStorage.setItem("aliases", JSON.stringify(aliases));
+    return id;
+  };
+
+  function updateAlias(id, cmd, val) {
+    const target = aliases.find(a => a.id === id);
+
+    if (target) {
+      target.command = cmd;
+      target.value = val;
+
+      localStorage.setItem("aliases", JSON.stringify(aliases));
+    }
+  }
+
+  function deleteAlias(id, parent) {
+    aliases = aliases.filter(a => a.id !== id);
+    localStorage.setItem("aliases", JSON.stringify(aliases));
+    parent.remove();
+  }
+
+  const backgroundImgToggle = document.getElementById("backgroundImgToggle");
+
+  backgroundImgToggle.addEventListener("change", (e) => {
+    if (e.currentTarget.checked) {
+      document.body.style.backgroundImage = "none";
+      localStorage.setItem("bg", "none");
+    } else {
+      document.body.style.backgroundImage = "url(https://res.cloudinary.com/dp7g5aflo/image/upload/v1771271258/Untitled197_20260217011416_nzj0tp.png)";
+      localStorage.setItem("bg", "url(https://res.cloudinary.com/dp7g5aflo/image/upload/v1771271258/Untitled197_20260217011416_nzj0tp.png)");
+    };
+  });
 
   const playerHpBar = document.getElementById("playerHpBar");
   const enemyHpBar = document.getElementById("enemyHpBar");
