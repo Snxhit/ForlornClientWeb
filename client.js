@@ -58,6 +58,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     for (const a of aliases) {
       createAliasVisual(a.command, a.value, a.id, true);
     }
+  } else {
+    createAliasVisual("hf", "help flavortown", 0, true);
+    const newAlias = {
+      id: 0,
+      command: "hf",
+      value: "help flavortown"
+    };
+    aliases.push(newAlias);
+    localStorage.setItem("aliases", JSON.stringify(aliases));
   }
 
   //dunno what this does, doesnt change anything??
@@ -99,16 +108,42 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const settingsButton = document.getElementById("settings");
+  const topBarSettingsButton = document.getElementById("topBarSettings");
+  const mapButton = document.getElementById("mapButton");
+  const topBarMapButton = document.getElementById("topBarMap");
+  const mapOverlay = document.getElementById("mapOverlay");
   const parentLayout = document.getElementById("parentLayout");
 
   const settingsPanel = document.getElementById("settingsPanel");
   const closeButton = document.getElementById("closeButton");
 
-  settingsButton.addEventListener("pointerdown", () => {
+  function openSettings() {
     document.title = "Forlorn - Settings";
     parentLayout.style.display = "flex";
     parentLayout.style.animation = "panelSlideRight 0.4s forwards";
-  });
+    document.getElementById("topBar").style.display = "none";
+  }
+
+  settingsButton.addEventListener("pointerdown", openSettings);
+  topBarSettingsButton.addEventListener("pointerdown", openSettings);
+
+  function openMap() {
+    mapOverlay.classList.add("active");
+    mapOverlay.classList.remove("closing");
+  }
+
+  function closeMap() {
+    mapOverlay.classList.add("closing");
+    setTimeout(() => {
+      mapOverlay.classList.remove("active");
+      mapOverlay.classList.remove("closing");
+    }, 300);
+  }
+
+  mapButton.addEventListener("pointerdown", openMap);
+  topBarMapButton.addEventListener("pointerdown", openMap);
+
+  mapOverlay.addEventListener("pointerdown", closeMap);
 
   closeButton.addEventListener("pointerdown", () => {
     document.title = "Forlorn - Web";
@@ -129,6 +164,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       settingsPanel.style.display = "none";
       parentLayout.style.display = "flex";
       parentLayout.style.animation = "panelSlideRightShow 0.4s forwards";
+      if (window.matchMedia("(max-width: 1046px)").matches) {
+        document.getElementById("topBar").style.display = "flex";
+      }
     }
   });
 
@@ -149,13 +187,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     let aliasCmd = document.createElement("input");
     aliasCmd.className = "settingsPanelButton aliasCmdInput";
     aliasCmd.type = "text";
-    aliasCmd.placeholder = "Write command here...";
+    aliasCmd.placeholder = "Write alias here...";
     aliasCmd.value = cmd;
 
     let aliasVal = document.createElement("input");
     aliasVal.className = "settingsPanelButton aliasValInput";
     aliasVal.type = "text";
-    aliasVal.placeholder = "Write alias here...";
+    aliasVal.placeholder = "Write command here...";
     aliasVal.value = val;
 
     let aliasSubmit = document.createElement("button");

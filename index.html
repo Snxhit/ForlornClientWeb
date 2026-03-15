@@ -73,15 +73,23 @@
             <span class="statValue" id="coinsValue">0</span>
           </div>
         </div>
-        <button id="settings" class="settings">
-          <img src="https://res.cloudinary.com/dp7g5aflo/image/upload/v1772889422/settings-cog_zxgkzv.png" alt="settings">
-        </button>
+        <div class="sidebarButtons">
+          <button id="mapButton" class="mapButton">
+            <img src="https://res.cloudinary.com/dp7g5aflo/image/upload/v1773577872/map_ico_lmyll0.png" alt="map">
+          </button>
+          <button id="settings" class="settings">
+            <img src="https://res.cloudinary.com/dp7g5aflo/image/upload/v1772889422/settings-cog_zxgkzv.png" alt="settings">
+          </button>
+        </div>
       </div>
       <div class="sideLogo">
         <p class="greenGradient">Forlorn</p>
         <p class="pinkGradient">MUD</p>
       </div>
     </div>
+  </div>
+  <div id="mapOverlay" class="mapOverlay">
+    <img id="mapImage" src="https://res.cloudinary.com/dp7g5aflo/image/upload/v1773577220/ForlornMUD_3_rgspof.png" alt="map">
   </div>
   <div id="settingsPanel">
     <h3 class="settingHeading">SETTINGS</h3>
@@ -101,6 +109,18 @@
     <div id="buttonsParent">
       <button class="settingsPanelButton" id="closeButton">CLOSE --></button>
     </div>
+  </div>
+  <div id="topBar" class="topBar">
+    <div id="topBarTextContainer">
+      <p id="topBarTitle">ForlornMUD</p>
+      <p id="topBarWarning">Forlorn doesn't work as intended on smaller screens! Please turn on `desktop site` mode from the 3 dots if you're on phone.</p>
+    </div>
+    <button id="topBarMap" class="mapButton topBarMapButton">
+      <img src="https://res.cloudinary.com/dp7g5aflo/image/upload/v1773577872/map_ico_lmyll0.png" alt="map">
+    </button>
+    <button id="topBarSettings" class="settings topBarSettings">
+      <img src="https://res.cloudinary.com/dp7g5aflo/image/upload/v1772889422/settings-cog_zxgkzv.png" alt="settings">
+    </button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>

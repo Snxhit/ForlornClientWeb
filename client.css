@@ -46,6 +46,7 @@ body
   margin-bottom: 0.5%;
   margin-left: 1%;
   margin-right: 1%;
+  min-height: 700px;
   background-color: rgba(0,0,0,0.4);
   border: 0.5px solid rgb(100,100,100);
   backdrop-filter: blur(5px);
@@ -73,6 +74,16 @@ body
 @keyframes panelSlideRightShow {
   from { transform: translateX(110%); }
   to { transform: translateX(0); }
+}
+
+@keyframes mapFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mapFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 .settingsPanelButton
@@ -104,6 +115,7 @@ body
 
 .settingHeading
 {
+  letter-spacing: 0.1px;
   padding-left: 25px;
   margin: 0px;
   margin-top: 20px;
@@ -206,6 +218,7 @@ body
 }
 .backgroundImgDiv h4
 {
+  font-size: 15px;
   margin: auto;
   margin-right: auto;
 }
@@ -229,7 +242,7 @@ body
 #closeButton
 {
   height: 100%;
-  width: 10%;
+  width: 20%;
 }
 
 .terminalParent
@@ -604,7 +617,8 @@ body
 }
 
 
-.settings {
+.settings
+{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -613,20 +627,21 @@ body
   border-radius: 10px;
   background: transparent;
   transition: all 0.3s ease;
-  margin-top: auto;
   height: 50px;
   width: 100%;
   cursor: pointer;
   padding: 0;
 }
 
-.settings:hover {
+.settings:hover
+{
   border: 2px solid rgba(72, 73, 74, 0.6);
   background: rgba(100, 100, 100, 0.1);
   border-radius: 10px;
 }
 
-.settings img {
+.settings img
+{
   width: 70%;
   height: 70%;
   object-fit: contain;
@@ -634,11 +649,309 @@ body
   pointer-events: none;
 }
 
-.settings:hover img {
+.settings:hover img
+{
   transform: rotate(90deg);
 }
 
-@media (max-width: 768px)
+.sidebarButtons
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: auto;
+  gap: 0;
+}
+
+.mapButton
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  transition: all 0.3s ease;
+  height: 50px;
+  width: 100%;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mapButton:hover
+{
+  border: 2px solid rgba(72, 73, 74, 0.6);
+  background: rgba(100, 100, 100, 0.1);
+  border-radius: 10px;
+}
+
+.mapButton img
+{
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.mapOverlay
+{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  opacity: 0;
+}
+
+.mapOverlay.active
+{
+  display: flex;
+  animation: mapFadeIn 0.3s ease forwards;
+}
+
+.mapOverlay.closing
+{
+  animation: mapFadeOut 0.3s ease forwards;
+}
+
+#mapImage
+{
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 2px solid rgba(100, 100, 100, 0.5);
+}
+
+.topBarMapButton
+{
+  display: none;
+  flex: 0 0 10%;
+  height: 100%;
+  width: auto !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 10px;
+}
+
+@media (max-width: 1046px)
+{
+  .mapButton
+  {
+    display: none;
+  }
+
+  .topBarMapButton
+  {
+    display: flex;
+  }
+}
+
+@media (max-width: 650px)
+{
+  .topBarMapButton
+  {
+    display: none;
+  }
+}
+
+.xterm-rows
+{
+  font-size: 16px;
+}
+
+.topBar
+{
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  border-bottom: 0.3px solid rgb(90, 90, 90);
+  border-radius: 0;
+  background: rgba(18, 18, 18, 0.30);
+  backdrop-filter: blur(3px);
+  height: 50px;
+  width: 100%;
+  padding: 5px;;
+  z-index: 100;
+}
+
+#topBarTextContainer
+{
+  flex: 9;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  overflow: hidden;
+  color: #cccccc;
+  font-size: 13px;
+  font-family: 'Fira Code', monospace;
+}
+
+#topBarTitle
+{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#topBarWarning
+{
+  white-space: normal;
+  font-size: 15px;
+}
+
+.topBarSettings
+{
+  flex: 0 0 10%;
+  height: 100%;
+  width: auto !important;
+  margin-top: 0 !important;
+  border-radius: 10px;
+}
+
+@media (max-width: 640px)
+{
+  .aliasCmdInput
+  {
+    font-size: 16px;
+    padding-left: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 40px;
+    width: 30%;
+    flex: 0.3;
+  }
+  .aliasValInput
+  {
+    font-size: 16px;
+    padding-left: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 40px;
+    width: 30%;
+    flex: 0.3;
+  }
+  .aliasSubmit
+  {
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 40px;
+    width: 25%;
+    flex: 0.25;
+    background-image: linear-gradient(to bottom, rgba(2, 125, 0, 0.5), rgba(0, 59, 4, 0.5));
+  }
+  .aliasDelete
+  {
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 40px;
+    width: 25%;
+    flex: 0.15;
+    background-image: linear-gradient(to bottom, rgba(125, 8, 0, 0.5), rgba(64, 4, 0, 0.5));
+  }
+
+
+  #closeButton
+  {
+    width: 40%;
+  }
+  .backgroundImgDiv
+  {
+    width: 70%;
+  }
+
+  #topBarTitle
+  {
+    display: none !important;
+  }
+  #topBarWarning
+  {
+    display: block !important;
+  }
+  .topBar
+  {
+    height: auto;
+    min-height: 50px;
+    padding: 8px 0;
+  }
+}
+
+
+@media (max-width: 1046px)
+{
+  .aliasDiv
+  {
+    width: 97%;
+  }
+
+  .backgroundImgDiv h4
+  {
+    font-size: 12px;
+  }
+
+  .topBar
+  {
+    display: flex;
+  }
+  #topBarTitle
+  {
+    font-size: 16px;
+    display: block;
+  }
+  #topBarWarning
+  {
+    display: none;
+  }
+
+  body
+  {
+    background-attachment: scroll;
+    background-size: auto 100%;
+    background-position: center top;
+  }
+
+  #parentLayout
+  {
+    flex-direction: column;
+  }
+
+  #terminal
+  {
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+  }
+  #inputBar
+  {
+    margin: 0;
+    padding: 0;
+  }
+  #inputBox
+  {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  #sideParent
+  {
+    display: none;
+  }
+}
+
+@media (max-height: 626px)
 {
   body
   {
@@ -654,13 +967,22 @@ body
 
   #terminal
   {
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
     margin: 0;
     border: none;
     border-radius: 0;
   }
+  #inputBar
+  {
+    margin: 0;
+    padding: 0;
+  }
   #inputBox
   {
     margin: 0;
+    font-size: 16px;
   }
 
 
